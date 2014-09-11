@@ -4,87 +4,52 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
-var Amputator;
-(function (Amputator) {
-    var Boot = (function (_super) {
-        __extends(Boot, _super);
-        function Boot() {
+var DudeTest;
+(function (DudeTest) {
+    var DudeGame = (function (_super) {
+        __extends(DudeGame, _super);
+        function DudeGame() {
             _super.apply(this, arguments);
         }
-        Boot.prototype.preload = function () {
-            this.load.image('background', 'assets/loading.png');
-        };
-
-        Boot.prototype.create = function () {
-            console.log('boot');
-            this.game.state.start('Preloader', true, false);
-        };
-        return Boot;
-    })(Phaser.State);
-    Amputator.Boot = Boot;
-})(Amputator || (Amputator = {}));
-var Amputator;
-(function (Amputator) {
-    var Entity = (function (_super) {
-        __extends(Entity, _super);
-        function Entity(game, x, y) {
-            _super.call(this, game, x, y, 'entity', 0);
-        }
-        return Entity;
-    })(Phaser.Sprite);
-    Amputator.Entity = Entity;
-})(Amputator || (Amputator = {}));
-var Amputator;
-(function (Amputator) {
-    var Game = (function (_super) {
-        __extends(Game, _super);
-        function Game() {
-            _super.call(this, 800, 600, Phaser.AUTO, 'content', null);
-
-            this.state.add('Boot', Amputator.Boot, false);
-
-            this.state.add('Preloader', Amputator.Preloader, false);
-
-            this.state.start('Boot');
-        }
-        return Game;
-    })(Phaser.Game);
-    Amputator.Game = Game;
-})(Amputator || (Amputator = {}));
+        return DudeGame;
+    })(Xube.Game);
+    DudeTest.DudeGame = DudeGame;
+})(DudeTest || (DudeTest = {}));
 
 window.onload = function () {
-    var game = new Amputator.Game();
+    var game = new DudeTest.DudeGame();
+    game.run();
 };
-var Amputator;
-(function (Amputator) {
-    var Preloader = (function (_super) {
-        __extends(Preloader, _super);
-        function Preloader() {
-            _super.apply(this, arguments);
+var Xube;
+(function (Xube) {
+    var Game = (function () {
+        function Game() {
+            this.initialized = false;
         }
-        Preloader.prototype.preload = function () {
-            this.preloadBar = this.add.sprite(0, 0, 'background');
-            this.load.setPreloadSprite(this.preloadBar);
-
-            this.load.image('titlepage', 'assets/loading.png');
+        Game.prototype.initialize = function () {
         };
 
-        Preloader.prototype.create = function () {
+        Game.prototype.doInitialize = function () {
+            this.initialize();
         };
-        return Preloader;
-    })(Phaser.State);
-    Amputator.Preloader = Preloader;
-})(Amputator || (Amputator = {}));
-var Amputator;
-(function (Amputator) {
-    (function (Entities) {
-        var Player = (function (_super) {
-            __extends(Player, _super);
-            function Player(game, x, y) {
-                _super.call(this, game, x, y);
+
+        Game.prototype.update = function () {
+        };
+
+        Game.prototype.run = function () {
+            if (!this.initialized) {
             }
-            return Player;
-        })(Amputator.Entity);
-    })(Amputator.Entities || (Amputator.Entities = {}));
-    var Entities = Amputator.Entities;
-})(Amputator || (Amputator = {}));
+        };
+        return Game;
+    })();
+    Xube.Game = Game;
+})(Xube || (Xube = {}));
+var Xube;
+(function (Xube) {
+    var GameObject = (function () {
+        function GameObject() {
+        }
+        return GameObject;
+    })();
+    Xube.GameObject = GameObject;
+})(Xube || (Xube = {}));
