@@ -42,4 +42,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', ['typescript:' + target]);
 
+    grunt.registerTask('testing', ['typescript:xube', 'typescript:dudetest']);
+
 };
