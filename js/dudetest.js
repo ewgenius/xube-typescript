@@ -1,5 +1,33 @@
 var Xube;
 (function (Xube) {
+    var GameObject = (function () {
+        function GameObject() {
+        }
+        GameObject.prototype.update = function (delta) {
+        };
+        return GameObject;
+    })();
+    Xube.GameObject = GameObject;
+})(Xube || (Xube = {}));
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var Xube;
+(function (Xube) {
+    var DrawableGameObject = (function (_super) {
+        __extends(DrawableGameObject, _super);
+        function DrawableGameObject() {
+            _super.apply(this, arguments);
+        }
+        return DrawableGameObject;
+    })(Xube.GameObject);
+    Xube.DrawableGameObject = DrawableGameObject;
+})(Xube || (Xube = {}));
+var Xube;
+(function (Xube) {
     var Game = (function () {
         function Game(container) {
             this.initialized = false;
@@ -12,6 +40,8 @@ var Xube;
             container.appendChild(this.renderer.domElement);
 
             this.scene = new THREE.Scene();
+
+            this.objects = [];
         }
         Game.prototype.initialize = function () {
             this.camera = new THREE.Camera();
@@ -21,7 +51,28 @@ var Xube;
             this.initialize();
         };
 
-        Game.prototype.update = function () {
+        Game.prototype.add = function (object) {
+            this.objects.push(object);
+            if (object instanceof Xube.DrawableGameObject) {
+                this.scene.add(object.mesh);
+            }
+        };
+
+        Game.prototype.remove = function (object) {
+            var i = this.objects.indexOf(object);
+            var obj = this.objects[i];
+
+            if (obj instanceof Xube.DrawableGameObject) {
+                this.scene.remove(obj.mesh);
+            }
+
+            this.objects.splice(i, 1);
+        };
+
+        Game.prototype.update = function (delta) {
+            for (var i in this.objects) {
+                this.objects[i].update(delta);
+            }
         };
 
         Game.prototype.render = function () {
@@ -33,7 +84,7 @@ var Xube;
             requestAnimationFrame(function () {
                 _this.loop();
             });
-            this.update();
+            this.update(1);
             this.render();
         };
 
@@ -49,25 +100,27 @@ var Xube;
     })();
     Xube.Game = Game;
 })(Xube || (Xube = {}));
-var Xube;
-(function (Xube) {
-    var GameObject = (function () {
-        function GameObject() {
-        }
-        return GameObject;
-    })();
-    Xube.GameObject = GameObject;
-})(Xube || (Xube = {}));
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 var sc;
 
 var DudeTest;
 (function (DudeTest) {
+    var Cube = (function (_super) {
+        __extends(Cube, _super);
+        function Cube() {
+            _super.call(this);
+
+            var geometry = new THREE.BoxGeometry(200, 200, 200);
+            var material = new THREE.MeshBasicMaterial();
+            this.mesh = new THREE.Mesh(geometry, material);
+        }
+        Cube.prototype.update = function (delta) {
+            this.mesh.rotation.x += 0.01 * delta;
+            this.mesh.rotation.y += 0.01 * delta;
+        };
+        return Cube;
+    })(Xube.DrawableGameObject);
+    DudeTest.Cube = Cube;
+
     var DudeGame = (function (_super) {
         __extends(DudeGame, _super);
         function DudeGame() {
@@ -91,10 +144,9 @@ var DudeTest;
                 light.position.set(0, 1, 0);
                 _this.scene.add(light);
 
-                var geometry = new THREE.BoxGeometry(200, 200, 200);
-                var material = new THREE.MeshBasicMaterial();
-                var mesh = new THREE.Mesh(geometry, material);
-                _this.scene.add(mesh);
+                var cube = new Cube();
+
+                _this.add(cube);
             })();
         };
         return DudeGame;

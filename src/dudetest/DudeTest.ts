@@ -9,8 +9,18 @@
 var sc;
 
 module DudeTest {
-    export class Cube extends Xube.GameObject {
+    export class Cube extends Xube.DrawableGameObject {
+        constructor() {
+            super();
+            var geometry = new THREE.BoxGeometry(200, 200, 200);
+            var material = new THREE.MeshBasicMaterial();
+            this.mesh = new THREE.Mesh(geometry, material);
+        }
 
+        update(delta) {
+            this.mesh.rotation.x += 0.01 * delta;
+            this.mesh.rotation.y += 0.01 * delta;
+        }
     }
 
     export class DudeGame extends Xube.Game {
@@ -32,10 +42,9 @@ module DudeTest {
                 light.position.set(0, 1, 0);
                 this.scene.add(light);
 
-                var geometry = new THREE.BoxGeometry(200, 200, 200);
-                var material = new THREE.MeshBasicMaterial();
-                var mesh = new THREE.Mesh(geometry, material);
-                this.scene.add(mesh);
+                var cube = new Cube();
+
+                this.add(cube);
             })();
         }
     }
