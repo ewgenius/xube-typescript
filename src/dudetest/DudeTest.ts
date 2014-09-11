@@ -18,8 +18,8 @@ module DudeTest {
         }
 
         update(delta) {
-            this.mesh.rotation.x += 0.01 * delta;
-            this.mesh.rotation.y += 0.01 * delta;
+            this.mesh.rotation.x += 0.1 / delta;
+            this.mesh.rotation.y += 0.1 / delta;
         }
     }
 

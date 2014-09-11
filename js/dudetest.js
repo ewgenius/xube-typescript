@@ -42,6 +42,8 @@ var Xube;
             this.scene = new THREE.Scene();
 
             this.objects = [];
+
+            this.lastFrame = 0;
         }
         Game.prototype.initialize = function () {
             this.camera = new THREE.Camera();
@@ -81,11 +83,19 @@ var Xube;
 
         Game.prototype.loop = function () {
             var _this = this;
+            var frame = new Date();
+            var delta = 20;
+            if (this.lastFrame != 0)
+                delta = frame.getTime() - this.lastFrame;
             requestAnimationFrame(function () {
                 _this.loop();
             });
-            this.update(1);
+
+            console.log(1000 / delta);
+            this.update(delta);
             this.render();
+
+            this.lastFrame = frame.getTime();
         };
 
         Game.prototype.run = function () {
@@ -108,14 +118,13 @@ var DudeTest;
         __extends(Cube, _super);
         function Cube() {
             _super.call(this);
-
             var geometry = new THREE.BoxGeometry(200, 200, 200);
             var material = new THREE.MeshBasicMaterial();
             this.mesh = new THREE.Mesh(geometry, material);
         }
         Cube.prototype.update = function (delta) {
-            this.mesh.rotation.x += 0.01 * delta;
-            this.mesh.rotation.y += 0.01 * delta;
+            this.mesh.rotation.x += 0.1 / delta;
+            this.mesh.rotation.y += 0.1 / delta;
         };
         return Cube;
     })(Xube.DrawableGameObject);

@@ -15,6 +15,7 @@ module Xube {
         scene:THREE.Scene;
         camera:THREE.Camera;
         private objects:GameObject[];
+        private lastFrame:number;
 
         constructor(container) {
             this.initialized = false;
@@ -31,6 +32,8 @@ module Xube {
             this.scene = new THREE.Scene();
 
             this.objects = [];
+
+            this.lastFrame = 0;
         }
 
         initialize() {
@@ -70,11 +73,19 @@ module Xube {
         }
 
         private loop() {
+            var frame = new Date();
+            var delta = 20;
+            if (this.lastFrame != 0)
+                delta = frame.getTime() - this.lastFrame;
             requestAnimationFrame(() => {
                 this.loop();
             });
-            this.update(1);
+
+            console.log(1000 / delta);
+            this.update(delta);
             this.render();
+
+            this.lastFrame = frame.getTime();
         }
 
         run() {
