@@ -64,6 +64,8 @@ var __extends = this.__extends || function (d, b) {
     __.prototype = b.prototype;
     d.prototype = new __();
 };
+var sc;
+
 var DudeTest;
 (function (DudeTest) {
     var DudeGame = (function (_super) {
@@ -74,6 +76,8 @@ var DudeTest;
         DudeGame.prototype.initialize = function () {
             var _this = this;
             _super.prototype.initialize.call(this);
+
+            sc = this.scene;
 
             this.renderer.setSize(800, 600);
 

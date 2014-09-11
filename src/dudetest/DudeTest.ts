@@ -5,10 +5,19 @@
 /// <reference path="../xube/GameObject.ts" />
 
 /// <reference path="../../lib/three.d.ts" />
+
+var sc;
+
 module DudeTest {
+    export class Cube extends Xube.GameObject {
+
+    }
+
     export class DudeGame extends Xube.Game {
         initialize() {
             super.initialize();
+
+            sc = this.scene;
 
             this.renderer.setSize(800, 600);
 
@@ -23,10 +32,10 @@ module DudeTest {
                 light.position.set(0, 1, 0);
                 this.scene.add(light);
 
-                var geometry = new THREE.BoxGeometry( 200, 200, 200 );
+                var geometry = new THREE.BoxGeometry(200, 200, 200);
                 var material = new THREE.MeshBasicMaterial();
-                var mesh = new THREE.Mesh( geometry, material );
-                this.scene.add( mesh );
+                var mesh = new THREE.Mesh(geometry, material);
+                this.scene.add(mesh);
             })();
         }
     }
