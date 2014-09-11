@@ -1,10 +1,10 @@
 /**
  * Created by ewgenius on 11.09.14.
  */
-/// <reference path="../xube/Game.ts" />
-/// <reference path="../xube/GameObject.ts" />
+/// <reference path="../../../src/xube/Game.ts" />
+/// <reference path="../../../src/xube/GameObject.ts" />
 
-/// <reference path="../../lib/three.d.ts" />
+/// <reference path="../../../lib/three.d.ts" />
 
 var sc;
 

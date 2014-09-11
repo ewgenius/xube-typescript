@@ -6,21 +6,14 @@ module.exports = function (grunt) {
         typescript: {
             base: {
                 src: ['src/**/*.ts'],
-                dest: 'js/game.js',
+                dest: 'build/xube.js',
                 options: {
                     module: 'amd'
                 }
             },
-            xube: {
-                src: ['src/xube/**/*.ts'],
-                dest: 'js/xube.js',
-                options: {
-                    module: 'amd'
-                }
-            },
-            dudetest: {
-                src: ['src/dudetest/**/*.ts'],
-                dest: 'js/dudetest.js',
+            test: {
+                src: ['examples/test/src/**/*.ts'],
+                dest: 'examples/test/js/game.js',
                 options: {
                     module: 'amd'
                 }

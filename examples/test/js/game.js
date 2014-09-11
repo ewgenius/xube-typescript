@@ -90,8 +90,6 @@ var Xube;
             requestAnimationFrame(function () {
                 _this.loop();
             });
-
-            console.log(1000 / delta);
             this.update(delta);
             this.render();
 
