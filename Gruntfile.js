@@ -10,6 +10,20 @@ module.exports = function (grunt) {
                 options: {
                     module: 'amd'
                 }
+            },
+            xube: {
+                src: ['src/xube/**/*.ts'],
+                dest: 'js/xube.js',
+                options: {
+                    module: 'amd'
+                }
+            },
+            dudetest: {
+                src: ['src/dudetest/**/*.ts'],
+                dest: 'js/dudetest.js',
+                options: {
+                    module: 'amd'
+                }
             }
         },
 
@@ -24,6 +38,8 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-typescript');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
-    grunt.registerTask('default', ['typescript']);
+    var target = grunt.option('target') || 'base';
+
+    grunt.registerTask('default', ['typescript:' + target]);
 
 };

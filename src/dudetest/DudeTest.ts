@@ -1,12 +1,12 @@
 /**
  * Created by ewgenius on 11.09.14.
  */
-/// <reference path="../lib/three.d.ts" />
+/// <reference path="../../lib/xube.d.ts" />
 
 module DudeTest {
     export class DudeGame extends Xube.Game {
         initialize() {
-            console.log('initialised');
+            console.log('initialized');
         }
     }
 }

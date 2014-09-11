@@ -13,7 +13,9 @@ module Xube {
             this.initialized = false;
         }
 
-        initialize();
+        initialize() {
+
+        }
 
         private doInitialize() {
             this.initialize();
