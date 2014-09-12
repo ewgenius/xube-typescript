@@ -9,12 +9,18 @@
 var sc;
 
 module DudeTest {
-    export class Cube extends Xube.DrawableGameObject {
+    class Cube extends Xube.DrawableGameObject {
         constructor() {
             super();
-            var geometry = new THREE.BoxGeometry(200, 200, 200);
-            var material = new THREE.MeshBasicMaterial();
+            var geometry = new THREE.BoxGeometry(20, 20, 20);
+            var material = new THREE.MeshLambertMaterial({color: Math.random() * 0xffffff});
+
             this.mesh = new THREE.Mesh(geometry, material);
+
+            this.mesh.position.x = Math.random() * 100;
+            this.mesh.position.y = Math.random() * 100;
+            this.mesh.position.z = Math.random() * 100;
+
         }
 
         update(delta) {
@@ -30,21 +36,25 @@ module DudeTest {
             sc = this.scene;
 
             this.renderer.setSize(800, 600);
-
-            this.camera = new THREE.PerspectiveCamera(45, 800 / 600, 1, 2000);
-            this.camera.position.set(0, 200, 800);
+            this.camera = new THREE.PerspectiveCamera(45, 800 / 600, 1, 5000);
+            this.camera.lookAt(new THREE.Vector3(-1, -1, -1));
+            this.camera.position.set(200, 200, 200);
 
             // init scene
             (() => {
-                this.scene.add(new THREE.AmbientLight(0x404040));
-
-                var light = new THREE.DirectionalLight(0xffffff);
-                light.position.set(0, 1, 0);
+                var light = new THREE.DirectionalLight(0xffffff, 2);
+                light.position.set(1, 1, 1).normalize();
                 this.scene.add(light);
 
-                var cube = new Cube();
+                var light = new THREE.DirectionalLight(0xffffff);
+                light.position.set(-1, -1, -1).normalize();
+                this.scene.add(light);
 
-                this.add(cube);
+
+                for (var i = 0; i < 20; i++) {
+                    var cube = new Cube();
+                    this.add(cube);
+                }
             })();
         }
     }
