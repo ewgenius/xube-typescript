@@ -20,7 +20,8 @@ bower install
 ### 2. Компиляция скриптов
 ```
 #!bash
-grunt
+grunt // компиляция библиотеки (/build/xube.js)
+grunt --target=test // компиляция примера (/examples/test/)
 
 ```
 
