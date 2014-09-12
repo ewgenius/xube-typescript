@@ -4,6 +4,10 @@
 
 * [typescript](http://www.typescriptlang.org/)
 
+## примеры:
+
+* [test 1](http://ewgenius.github.io/xube-typescript/examples/test/)
+
 ## Для запуска
 
 ### 1. Зависимости проекта
