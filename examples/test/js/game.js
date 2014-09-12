@@ -118,16 +118,33 @@ var DudeTest;
 (function (DudeTest) {
     var Coords = (function (_super) {
         __extends(Coords, _super);
-        function Coords() {
+        function Coords(length) {
             _super.call(this);
 
-            var geometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
-            var material = new THREE.MeshLambertMaterial({ color: 0x555555 });
+            var geometryX = new THREE.Geometry();
+            geometryX.vertices.push(new THREE.Vector3(0, 0, 0));
+            geometryX.vertices.push(new THREE.Vector3(length, 0, 0));
+            var axeX = new THREE.Line(geometryX, new THREE.LineBasicMaterial({
+                color: 0xff0000
+            }));
 
-            var mesh = new THREE.Mesh(geometry, material);
-            mesh.rotateX(-Math.PI / 2);
+            var geometryY = new THREE.Geometry();
+            geometryY.vertices.push(new THREE.Vector3(0, 0, 0));
+            geometryY.vertices.push(new THREE.Vector3(0, length, 0));
+            var axeY = new THREE.Line(geometryY, new THREE.LineBasicMaterial({
+                color: 0x00ff00
+            }));
 
-            this.model.add(mesh);
+            var geometryZ = new THREE.Geometry();
+            geometryZ.vertices.push(new THREE.Vector3(0, 0, 0));
+            geometryZ.vertices.push(new THREE.Vector3(0, 0, length));
+            var axeZ = new THREE.Line(geometryZ, new THREE.LineBasicMaterial({
+                color: 0x0000ff
+            }));
+
+            this.model.add(axeX);
+            this.model.add(axeY);
+            this.model.add(axeZ);
         }
         return Coords;
     })(Xube.DrawableGameObject);
@@ -183,8 +200,8 @@ var DudeTest;
 
             this.renderer.setSize(1000, 600);
             this.camera = new THREE.PerspectiveCamera(45, 1000 / 600, 1, 5000);
-            this.camera.lookAt(new THREE.Vector3(-200, -20, -200));
-            this.camera.position.set(200, 20, 200);
+            this.camera.lookAt(new THREE.Vector3(-200, -50, -200));
+            this.camera.position.set(200, 50, 200);
 
             (function () {
                 var light = new THREE.DirectionalLight(0xffffff, 2);
@@ -195,12 +212,15 @@ var DudeTest;
                 light.position.set(-1, -1, -1).normalize();
                 _this.scene.add(light);
 
+                _this.add(new Coords(100));
+
                 for (var i = 0; i < 20; i++) {
                     var cube = new Cube();
                     _this.add(cube);
                 }
 
                 var plane = new Plane();
+                plane.model.position.y = -2;
                 _this.add(plane);
             })();
         };
