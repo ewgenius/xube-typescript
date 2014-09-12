@@ -20,8 +20,13 @@ var Xube;
     var DrawableGameObject = (function (_super) {
         __extends(DrawableGameObject, _super);
         function DrawableGameObject() {
-            _super.apply(this, arguments);
+            _super.call(this);
+
+            this.model = new THREE.Object3D();
         }
+        DrawableGameObject.prototype.setPosition = function (position) {
+            this.model.position.set(position.x, position.y, position.z);
+        };
         return DrawableGameObject;
     })(Xube.GameObject);
     Xube.DrawableGameObject = DrawableGameObject;
@@ -56,7 +61,7 @@ var Xube;
         Game.prototype.add = function (object) {
             this.objects.push(object);
             if (object instanceof Xube.DrawableGameObject) {
-                this.scene.add(object.mesh);
+                this.scene.add(object.model);
             }
         };
 
@@ -65,7 +70,7 @@ var Xube;
             var obj = this.objects[i];
 
             if (obj instanceof Xube.DrawableGameObject) {
-                this.scene.remove(obj.mesh);
+                this.scene.remove(obj.model);
             }
 
             this.objects.splice(i, 1);
