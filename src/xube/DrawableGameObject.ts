@@ -6,10 +6,15 @@
 
 module Xube {
     export class DrawableGameObject extends GameObject {
-        mesh:THREE.Mesh;
+        model: THREE.Object3D;
+
+        constructor() {
+            super();
+            this.model = new THREE.Object3D();
+        }
 
         setPosition(position:THREE.Vector3) {
-            this.mesh.position.set(position.x, position.y, position.z);
+            this.model.position.set(position.x, position.y, position.z);
         }
     }
 }

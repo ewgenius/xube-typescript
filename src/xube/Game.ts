@@ -15,7 +15,7 @@ module Xube {
         scene:THREE.Scene;
         camera:THREE.Camera;
         private objects:GameObject[];
-        private lastFrame:number;
+        lastFrame:number;
 
         constructor(container) {
             this.initialized = false;
@@ -47,7 +47,7 @@ module Xube {
         add(object:GameObject) {
             this.objects.push(object);
             if (object instanceof Xube.DrawableGameObject) {
-                this.scene.add((<Xube.DrawableGameObject>object).mesh);
+                this.scene.add((<Xube.DrawableGameObject>object).model);
             }
         }
 
@@ -56,13 +56,13 @@ module Xube {
             var obj = this.objects[i];
 
             if (obj instanceof Xube.DrawableGameObject) {
-                this.scene.remove((<Xube.DrawableGameObject>obj).mesh);
+                this.scene.remove((<Xube.DrawableGameObject>obj).model);
             }
 
             this.objects.splice(i, 1);
         }
 
-        update(delta) {
+        update(delta:number) {
             for (var i in this.objects) {
                 this.objects[i].update(delta);
             }
