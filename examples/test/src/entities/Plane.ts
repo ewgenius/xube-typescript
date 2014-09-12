@@ -8,8 +8,8 @@ module DudeTest.Entities {
         constructor() {
             super();
 
-            var geometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
-            var material = new THREE.MeshLambertMaterial({color: 0x555555});
+            var geometry = new THREE.PlaneGeometry(10, 10, 10, 10);
+            var material = new THREE.MeshLambertMaterial({color: 0x555555, wireframe: true });
 
             var mesh = new THREE.Mesh(geometry, material);
             mesh.rotateX(-Math.PI / 2);
@@ -17,5 +17,4 @@ module DudeTest.Entities {
             this.model.add(mesh);
         }
     }
-
 }

@@ -196,8 +196,8 @@ var DudeTest;
             function Plane() {
                 _super.call(this);
 
-                var geometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
-                var material = new THREE.MeshLambertMaterial({ color: 0x555555 });
+                var geometry = new THREE.PlaneGeometry(10, 10, 10, 10);
+                var material = new THREE.MeshLambertMaterial({ color: 0x555555, wireframe: true });
 
                 var mesh = new THREE.Mesh(geometry, material);
                 mesh.rotateX(-Math.PI / 2);
@@ -207,6 +207,34 @@ var DudeTest;
             return Plane;
         })(Xube.DrawableGameObject);
         Entities.Plane = Plane;
+    })(DudeTest.Entities || (DudeTest.Entities = {}));
+    var Entities = DudeTest.Entities;
+})(DudeTest || (DudeTest = {}));
+var DudeTest;
+(function (DudeTest) {
+    (function (Entities) {
+        var Minion = (function (_super) {
+            __extends(Minion, _super);
+            function Minion() {
+                var _this = this;
+                _super.call(this);
+                var loader = new THREE.JSONLoader();
+                loader.load('assets/minion.js', function (geometry, materials) {
+                    var mesh = new THREE.SkinnedMesh(geometry, new THREE.MeshFaceMaterial(materials));
+                    mesh.scale.x = 10;
+                    mesh.scale.y = 10;
+                    mesh.scale.z = 10;
+
+                    _this.model.add(mesh);
+
+                    console.log('loaded');
+                });
+            }
+            Minion.prototype.update = function (delta, game) {
+            };
+            return Minion;
+        })(Xube.DrawableGameObject);
+        Entities.Minion = Minion;
     })(DudeTest.Entities || (DudeTest.Entities = {}));
     var Entities = DudeTest.Entities;
 })(DudeTest || (DudeTest = {}));
@@ -228,7 +256,18 @@ var DudeTest;
             this.renderer.setSize(1000, 600);
             this.camera = new THREE.PerspectiveCamera(45, 1000 / 600, 1, 5000);
             this.camera.lookAt(new THREE.Vector3(-200, -50, -200));
-            this.camera.position.set(200, 50, 200);
+            this.camera.position.set(20, 5, 20);
+
+            this.controls = new THREE.TrackballControls(this.camera, this.renderer.domElement);
+            this.controls.target.set(0, 0, 0);
+            this.controls.rotateSpeed = 1.0;
+            this.controls.zoomSpeed = 1.2;
+            this.controls.panSpeed = 0.8;
+            this.controls.noZoom = false;
+            this.controls.noPan = false;
+            this.controls.staticMoving = true;
+            this.controls.dynamicDampingFactor = 0.3;
+            this.controls.keys = [65, 83, 68];
 
             (function () {
                 var light = new THREE.DirectionalLight(0xffffff, 2);
@@ -239,20 +278,17 @@ var DudeTest;
                 light.position.set(-1, -1, -1).normalize();
                 _this.scene.add(light);
 
-                _this.add(new DudeTest.Entities.Coords(100));
+                _this.add(new DudeTest.Entities.Coords(5));
 
-                for (var i = 0; i < 200; i++) {
-                    var cube = new DudeTest.Entities.Cube();
-                    _this.add(cube);
-                }
+                _this.add(new DudeTest.Entities.Minion());
+
+                var plane = new DudeTest.Entities.Plane();
+                _this.add(plane);
             })();
         };
 
         DudeGame.prototype.update = function (delta, game) {
-            this.camera.position.x = 200 * Math.cos(this.lastFrame / 10000.0);
-            this.camera.position.z = 200 * Math.sin(this.lastFrame / 10000.0);
-            this.camera.lookAt(new THREE.Vector3(-this.camera.position.x, -this.camera.position.y, -this.camera.position.z));
-
+            this.controls.update();
             _super.prototype.update.call(this, delta, game);
         };
         return DudeGame;
