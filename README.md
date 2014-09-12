@@ -1,5 +1,8 @@
 # Xube engine
 
+3D framework, writing in typescript over [THREE.js](http://threejs.org/) library.
+Inspired by XNA and (MonoGame)[https://github.com/mono/MonoGame]
+
 ## links
 
 * [typescript](http://www.typescriptlang.org/)
