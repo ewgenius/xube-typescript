@@ -3,7 +3,7 @@ var Xube;
     var GameObject = (function () {
         function GameObject() {
         }
-        GameObject.prototype.update = function (delta) {
+        GameObject.prototype.update = function (delta, game) {
         };
         return GameObject;
     })();
@@ -75,9 +75,9 @@ var Xube;
             this.objects.splice(i, 1);
         };
 
-        Game.prototype.update = function (delta) {
+        Game.prototype.update = function (delta, game) {
             for (var i in this.objects) {
-                this.objects[i].update(delta);
+                this.objects[i].update(delta, game);
             }
         };
 
@@ -94,7 +94,7 @@ var Xube;
             requestAnimationFrame(function () {
                 _this.loop();
             });
-            this.update(delta);
+            this.update(delta, this);
             this.render();
 
             this.lastFrame = frame.getTime();
@@ -112,81 +112,108 @@ var Xube;
     })();
     Xube.Game = Game;
 })(Xube || (Xube = {}));
+var DudeTest;
+(function (DudeTest) {
+    (function (Entities) {
+        var Cube = (function (_super) {
+            __extends(Cube, _super);
+            function Cube() {
+                _super.call(this);
+
+                this.radius = Math.random() * 50;
+                this.speed = (Math.random() - 0.5) * 10;
+
+                var geometry = new THREE.BoxGeometry(1, 1, 1);
+                var material = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
+
+                var mesh = new THREE.Mesh(geometry, material);
+
+                this.model.add(mesh);
+
+                this.model.position.x = Math.random() * 100 - 50;
+                this.model.position.y = Math.random() * 100 - 50;
+                this.model.position.z = Math.random() * 100 - 50;
+            }
+            Cube.prototype.update = function (delta, game) {
+                this.model.position.x = this.radius * Math.cos(this.speed * game.lastFrame / 5000.0);
+                this.model.position.z = this.radius * Math.sin(this.speed * game.lastFrame / 5000.0);
+                this.model.position.y = this.radius * Math.sin(this.speed * game.lastFrame / 500.0);
+                this.model.rotation.x += (Math.random() * 10 - 5) / delta;
+                this.model.rotation.y += (Math.random() * 10 - 5) / delta;
+
+                _super.prototype.update.call(this, delta, game);
+            };
+            return Cube;
+        })(Xube.DrawableGameObject);
+        Entities.Cube = Cube;
+    })(DudeTest.Entities || (DudeTest.Entities = {}));
+    var Entities = DudeTest.Entities;
+})(DudeTest || (DudeTest = {}));
+var DudeTest;
+(function (DudeTest) {
+    (function (Entities) {
+        var Coords = (function (_super) {
+            __extends(Coords, _super);
+            function Coords(length) {
+                _super.call(this);
+
+                var geometryX = new THREE.Geometry();
+                geometryX.vertices.push(new THREE.Vector3(0, 0, 0));
+                geometryX.vertices.push(new THREE.Vector3(length, 0, 0));
+                var axeX = new THREE.Line(geometryX, new THREE.LineBasicMaterial({
+                    color: 0xff0000
+                }));
+
+                var geometryY = new THREE.Geometry();
+                geometryY.vertices.push(new THREE.Vector3(0, 0, 0));
+                geometryY.vertices.push(new THREE.Vector3(0, length, 0));
+                var axeY = new THREE.Line(geometryY, new THREE.LineBasicMaterial({
+                    color: 0x00ff00
+                }));
+
+                var geometryZ = new THREE.Geometry();
+                geometryZ.vertices.push(new THREE.Vector3(0, 0, 0));
+                geometryZ.vertices.push(new THREE.Vector3(0, 0, length));
+                var axeZ = new THREE.Line(geometryZ, new THREE.LineBasicMaterial({
+                    color: 0x0000ff
+                }));
+
+                this.model.add(axeX);
+                this.model.add(axeY);
+                this.model.add(axeZ);
+            }
+            return Coords;
+        })(Xube.DrawableGameObject);
+        Entities.Coords = Coords;
+    })(DudeTest.Entities || (DudeTest.Entities = {}));
+    var Entities = DudeTest.Entities;
+})(DudeTest || (DudeTest = {}));
+var DudeTest;
+(function (DudeTest) {
+    (function (Entities) {
+        var Plane = (function (_super) {
+            __extends(Plane, _super);
+            function Plane() {
+                _super.call(this);
+
+                var geometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
+                var material = new THREE.MeshLambertMaterial({ color: 0x555555 });
+
+                var mesh = new THREE.Mesh(geometry, material);
+                mesh.rotateX(-Math.PI / 2);
+
+                this.model.add(mesh);
+            }
+            return Plane;
+        })(Xube.DrawableGameObject);
+        Entities.Plane = Plane;
+    })(DudeTest.Entities || (DudeTest.Entities = {}));
+    var Entities = DudeTest.Entities;
+})(DudeTest || (DudeTest = {}));
 var sc;
 
 var DudeTest;
 (function (DudeTest) {
-    var Coords = (function (_super) {
-        __extends(Coords, _super);
-        function Coords(length) {
-            _super.call(this);
-
-            var geometryX = new THREE.Geometry();
-            geometryX.vertices.push(new THREE.Vector3(0, 0, 0));
-            geometryX.vertices.push(new THREE.Vector3(length, 0, 0));
-            var axeX = new THREE.Line(geometryX, new THREE.LineBasicMaterial({
-                color: 0xff0000
-            }));
-
-            var geometryY = new THREE.Geometry();
-            geometryY.vertices.push(new THREE.Vector3(0, 0, 0));
-            geometryY.vertices.push(new THREE.Vector3(0, length, 0));
-            var axeY = new THREE.Line(geometryY, new THREE.LineBasicMaterial({
-                color: 0x00ff00
-            }));
-
-            var geometryZ = new THREE.Geometry();
-            geometryZ.vertices.push(new THREE.Vector3(0, 0, 0));
-            geometryZ.vertices.push(new THREE.Vector3(0, 0, length));
-            var axeZ = new THREE.Line(geometryZ, new THREE.LineBasicMaterial({
-                color: 0x0000ff
-            }));
-
-            this.model.add(axeX);
-            this.model.add(axeY);
-            this.model.add(axeZ);
-        }
-        return Coords;
-    })(Xube.DrawableGameObject);
-
-    var Plane = (function (_super) {
-        __extends(Plane, _super);
-        function Plane() {
-            _super.call(this);
-
-            var geometry = new THREE.PlaneGeometry(1000, 1000, 1, 1);
-            var material = new THREE.MeshLambertMaterial({ color: 0x555555 });
-
-            var mesh = new THREE.Mesh(geometry, material);
-            mesh.rotateX(-Math.PI / 2);
-
-            this.model.add(mesh);
-        }
-        return Plane;
-    })(Xube.DrawableGameObject);
-
-    var Cube = (function (_super) {
-        __extends(Cube, _super);
-        function Cube() {
-            _super.call(this);
-            var geometry = new THREE.BoxGeometry(5, 5, 5);
-            var material = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
-
-            var mesh = new THREE.Mesh(geometry, material);
-
-            this.model.add(mesh);
-
-            this.model.position.x = Math.random() * 100;
-            this.model.position.y = Math.random() * 100;
-            this.model.position.z = Math.random() * 100;
-        }
-        Cube.prototype.update = function (delta) {
-            this.model.rotation.x += 0.1 / delta;
-            this.model.rotation.y += 0.1 / delta;
-        };
-        return Cube;
-    })(Xube.DrawableGameObject);
-
     var DudeGame = (function (_super) {
         __extends(DudeGame, _super);
         function DudeGame() {
@@ -212,25 +239,21 @@ var DudeTest;
                 light.position.set(-1, -1, -1).normalize();
                 _this.scene.add(light);
 
-                _this.add(new Coords(100));
+                _this.add(new DudeTest.Entities.Coords(100));
 
-                for (var i = 0; i < 20; i++) {
-                    var cube = new Cube();
+                for (var i = 0; i < 200; i++) {
+                    var cube = new DudeTest.Entities.Cube();
                     _this.add(cube);
                 }
-
-                var plane = new Plane();
-                plane.model.position.y = -2;
-                _this.add(plane);
             })();
         };
 
-        DudeGame.prototype.update = function (delta) {
+        DudeGame.prototype.update = function (delta, game) {
             this.camera.position.x = 200 * Math.cos(this.lastFrame / 10000.0);
             this.camera.position.z = 200 * Math.sin(this.lastFrame / 10000.0);
             this.camera.lookAt(new THREE.Vector3(-this.camera.position.x, -this.camera.position.y, -this.camera.position.z));
 
-            _super.prototype.update.call(this, delta);
+            _super.prototype.update.call(this, delta, game);
         };
         return DudeGame;
     })(Xube.Game);

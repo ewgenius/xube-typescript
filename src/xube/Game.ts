@@ -62,9 +62,9 @@ module Xube {
             this.objects.splice(i, 1);
         }
 
-        update(delta:number) {
+        update(delta:number, game: Game) {
             for (var i in this.objects) {
-                this.objects[i].update(delta);
+                this.objects[i].update(delta, game);
             }
         }
 
@@ -80,7 +80,7 @@ module Xube {
             requestAnimationFrame(() => {
                 this.loop();
             });
-            this.update(delta);
+            this.update(delta, this);
             this.render();
 
             this.lastFrame = frame.getTime();

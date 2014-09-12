@@ -3,7 +3,7 @@ var Xube;
     var GameObject = (function () {
         function GameObject() {
         }
-        GameObject.prototype.update = function (delta) {
+        GameObject.prototype.update = function (delta, game) {
         };
         return GameObject;
     })();
@@ -21,7 +21,6 @@ var Xube;
         __extends(DrawableGameObject, _super);
         function DrawableGameObject() {
             _super.call(this);
-
             this.model = new THREE.Object3D();
         }
         DrawableGameObject.prototype.setPosition = function (position) {
@@ -76,9 +75,9 @@ var Xube;
             this.objects.splice(i, 1);
         };
 
-        Game.prototype.update = function (delta) {
+        Game.prototype.update = function (delta, game) {
             for (var i in this.objects) {
-                this.objects[i].update(delta);
+                this.objects[i].update(delta, game);
             }
         };
 
@@ -95,7 +94,7 @@ var Xube;
             requestAnimationFrame(function () {
                 _this.loop();
             });
-            this.update(delta);
+            this.update(delta, this);
             this.render();
 
             this.lastFrame = frame.getTime();
