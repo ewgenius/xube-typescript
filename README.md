@@ -1,16 +1,16 @@
 # Xube engine
 
-## ссылки
+## links
 
 * [typescript](http://www.typescriptlang.org/)
 
-## примеры:
+## examples:
 
 * [test 1](http://ewgenius.github.io/xube-typescript/examples/test/)
 
-## Для запуска
+## For start
 
-### 1. Зависимости проекта
+### 1. dependecies
 ```
 #!bash
 sudo npm install typescript -g
@@ -21,17 +21,10 @@ bower install
 
 ```
 
-### 2. Компиляция скриптов
+### 2. compile
 ```
 #!bash
-grunt // компиляция библиотеки (/build/xube.js)
-grunt --target=test // компиляция примера (/examples/test/)
-
-```
-
-### 3. Запуск
-```
-#!bash
-python -m SimpleHTTPServer
+grunt // only library (/build/xube.js)
+grunt --target=test // compile example (/examples/test/)
 
 ```
