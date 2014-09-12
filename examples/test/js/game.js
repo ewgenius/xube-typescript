@@ -3,7 +3,7 @@ var Xube;
     var GameObject = (function () {
         function GameObject() {
         }
-        GameObject.prototype.update = function (delta) {
+        GameObject.prototype.update = function (delta, game) {
         };
         return GameObject;
     })();
@@ -75,9 +75,9 @@ var Xube;
             this.objects.splice(i, 1);
         };
 
-        Game.prototype.update = function (delta) {
+        Game.prototype.update = function (delta, game) {
             for (var i in this.objects) {
-                this.objects[i].update(delta);
+                this.objects[i].update(delta, game);
             }
         };
 
@@ -94,7 +94,7 @@ var Xube;
             requestAnimationFrame(function () {
                 _this.loop();
             });
-            this.update(delta);
+            this.update(delta, this);
             this.render();
 
             this.lastFrame = frame.getTime();
@@ -119,7 +119,11 @@ var DudeTest;
             __extends(Cube, _super);
             function Cube() {
                 _super.call(this);
-                var geometry = new THREE.BoxGeometry(5, 5, 5);
+
+                this.radius = Math.random() * 50;
+                this.speed = (Math.random() - 0.5) * 10;
+
+                var geometry = new THREE.BoxGeometry(1, 1, 1);
                 var material = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
 
                 var mesh = new THREE.Mesh(geometry, material);
@@ -130,9 +134,14 @@ var DudeTest;
                 this.model.position.y = Math.random() * 100 - 50;
                 this.model.position.z = Math.random() * 100 - 50;
             }
-            Cube.prototype.update = function (delta) {
-                this.model.rotation.x += 0.1 / delta;
-                this.model.rotation.y += 0.1 / delta;
+            Cube.prototype.update = function (delta, game) {
+                this.model.position.x = this.radius * Math.cos(this.speed * game.lastFrame / 5000.0);
+                this.model.position.z = this.radius * Math.sin(this.speed * game.lastFrame / 5000.0);
+                this.model.position.y = this.radius * Math.sin(this.speed * game.lastFrame / 500.0);
+                this.model.rotation.x += (Math.random() * 10 - 5) / delta;
+                this.model.rotation.y += (Math.random() * 10 - 5) / delta;
+
+                _super.prototype.update.call(this, delta, game);
             };
             return Cube;
         })(Xube.DrawableGameObject);
@@ -232,23 +241,19 @@ var DudeTest;
 
                 _this.add(new DudeTest.Entities.Coords(100));
 
-                for (var i = 0; i < 100; i++) {
+                for (var i = 0; i < 200; i++) {
                     var cube = new DudeTest.Entities.Cube();
                     _this.add(cube);
                 }
-
-                var plane = new DudeTest.Entities.Plane();
-                plane.model.position.y = -2;
-                _this.add(plane);
             })();
         };
 
-        DudeGame.prototype.update = function (delta) {
+        DudeGame.prototype.update = function (delta, game) {
             this.camera.position.x = 200 * Math.cos(this.lastFrame / 10000.0);
             this.camera.position.z = 200 * Math.sin(this.lastFrame / 10000.0);
             this.camera.lookAt(new THREE.Vector3(-this.camera.position.x, -this.camera.position.y, -this.camera.position.z));
 
-            _super.prototype.update.call(this, delta);
+            _super.prototype.update.call(this, delta, game);
         };
         return DudeGame;
     })(Xube.Game);

@@ -35,25 +35,23 @@ module DudeTest {
 
                 this.add(new Entities.Coords(100));
 
-                for (var i = 0; i < 100; i++) {
+                for (var i = 0; i < 200; i++) {
                     var cube = new Entities.Cube();
                     this.add(cube);
                 }
 
-                var plane = new Entities.Plane();
-                plane.model.position.y = -2;
-                this.add(plane);
+                //var plane = new Entities.Plane();
+                //plane.model.position.y = -2;
+                //this.add(plane);
             })();
         }
 
-        update(delta:number) {
-            //console.log(this.lastFrame / 1000.0);
-
+        update(delta:number, game:Xube.Game) {
             this.camera.position.x = 200 * Math.cos(this.lastFrame / 10000.0);
             this.camera.position.z = 200 * Math.sin(this.lastFrame / 10000.0);
             this.camera.lookAt(new THREE.Vector3(-this.camera.position.x, -this.camera.position.y, -this.camera.position.z));
 
-            super.update(delta);
+            super.update(delta, game);
         }
     }
 }

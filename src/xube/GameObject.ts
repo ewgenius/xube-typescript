@@ -8,7 +8,7 @@ module Xube {
 
         }
 
-        update(delta) {
+        update(delta:number, game:Xube.Game) {
 
         }
     }
