@@ -4,5 +4,12 @@
 /// <reference path="../../lib/three.d.ts" />
 module Xube {
     export class GameObject {
+        constructor() {
+
+        }
+
+        update(delta) {
+
+        }
     }
 }

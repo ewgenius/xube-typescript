@@ -2,6 +2,9 @@
  * Created by ewgenius on 11.09.14.
  */
 /// <reference path="../../lib/three.d.ts" />
+/// <reference path="GameObject.ts" />
+/// <reference path="DrawableGameObject.ts" />
+
 module Xube {
     export interface Initializeable {
         initialize();
@@ -11,6 +14,8 @@ module Xube {
         renderer:THREE.WebGLRenderer;
         scene:THREE.Scene;
         camera:THREE.Camera;
+        private objects:GameObject[];
+        private lastFrame:number;
 
         constructor(container) {
             this.initialized = false;
@@ -25,18 +30,42 @@ module Xube {
             container.appendChild(this.renderer.domElement);
 
             this.scene = new THREE.Scene();
+
+            this.objects = [];
+
+            this.lastFrame = 0;
         }
 
         initialize() {
             this.camera = new THREE.Camera();
-
         }
 
         private doInitialize() {
             this.initialize();
         }
 
-        update() {
+        add(object:GameObject) {
+            this.objects.push(object);
+            if (object instanceof Xube.DrawableGameObject) {
+                this.scene.add((<Xube.DrawableGameObject>object).mesh);
+            }
+        }
+
+        remove(object:GameObject) {
+            var i = this.objects.indexOf(object);
+            var obj = this.objects[i];
+
+            if (obj instanceof Xube.DrawableGameObject) {
+                this.scene.remove((<Xube.DrawableGameObject>obj).mesh);
+            }
+
+            this.objects.splice(i, 1);
+        }
+
+        update(delta) {
+            for (var i in this.objects) {
+                this.objects[i].update(delta);
+            }
         }
 
         render() {
@@ -44,11 +73,17 @@ module Xube {
         }
 
         private loop() {
+            var frame = new Date();
+            var delta = 20;
+            if (this.lastFrame != 0)
+                delta = frame.getTime() - this.lastFrame;
             requestAnimationFrame(() => {
                 this.loop();
             });
-            this.update();
+            this.update(delta);
             this.render();
+
+            this.lastFrame = frame.getTime();
         }
 
         run() {

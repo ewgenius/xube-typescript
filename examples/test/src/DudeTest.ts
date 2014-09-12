@@ -1,16 +1,26 @@
 /**
  * Created by ewgenius on 11.09.14.
  */
-/// <reference path="../xube/Game.ts" />
-/// <reference path="../xube/GameObject.ts" />
+/// <reference path="../../../src/xube/Game.ts" />
+/// <reference path="../../../src/xube/GameObject.ts" />
 
-/// <reference path="../../lib/three.d.ts" />
+/// <reference path="../../../lib/three.d.ts" />
 
 var sc;
 
 module DudeTest {
-    export class Cube extends Xube.GameObject {
+    export class Cube extends Xube.DrawableGameObject {
+        constructor() {
+            super();
+            var geometry = new THREE.BoxGeometry(200, 200, 200);
+            var material = new THREE.MeshBasicMaterial();
+            this.mesh = new THREE.Mesh(geometry, material);
+        }
 
+        update(delta) {
+            this.mesh.rotation.x += 0.1 / delta;
+            this.mesh.rotation.y += 0.1 / delta;
+        }
     }
 
     export class DudeGame extends Xube.Game {
@@ -32,10 +42,9 @@ module DudeTest {
                 light.position.set(0, 1, 0);
                 this.scene.add(light);
 
-                var geometry = new THREE.BoxGeometry(200, 200, 200);
-                var material = new THREE.MeshBasicMaterial();
-                var mesh = new THREE.Mesh(geometry, material);
-                this.scene.add(mesh);
+                var cube = new Cube();
+
+                this.add(cube);
             })();
         }
     }
