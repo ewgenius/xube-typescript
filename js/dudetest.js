@@ -68,6 +68,15 @@ var sc;
 
 var DudeTest;
 (function (DudeTest) {
+    var Cube = (function (_super) {
+        __extends(Cube, _super);
+        function Cube() {
+            _super.apply(this, arguments);
+        }
+        return Cube;
+    })(Xube.GameObject);
+    DudeTest.Cube = Cube;
+
     var DudeGame = (function (_super) {
         __extends(DudeGame, _super);
         function DudeGame() {
