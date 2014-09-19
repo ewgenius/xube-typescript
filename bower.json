@@ -15,6 +15,7 @@
   ],
   "dependencies": {
     "three.js": "*",
-    "three.js-controls": "~0.0.67"
+    "three.js-controls": "~0.0.67",
+    "physijs": "*"
   }
 }

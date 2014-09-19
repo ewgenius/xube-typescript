@@ -14,7 +14,6 @@ module Xube {
          * @param game
          */
         update(delta:number, game:Xube.Game) {
-
         }
     }
 }
