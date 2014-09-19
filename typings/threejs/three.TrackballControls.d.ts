@@ -9,8 +9,7 @@ declare module THREE {
         rotateSpeed:number;
         zoomSpeed:number;
         panSpeed:number;
-        noZoom:boolean;
-        noPan:boolean;
+
         staticMoving:boolean;
         dynamicDampingFactor:number;
         screen:{
@@ -19,13 +18,10 @@ declare module THREE {
             width:number;
             height:number
         };
-
         noRotate:boolean;
+        noRoll:boolean;
         noZoom:boolean;
         noPan:boolean;
-        noRoll:boolean;
-        staticMoving:boolean;
-        dynamicDampingFactor:number;
         minDistance:number;
         maxDistance:number;
 
