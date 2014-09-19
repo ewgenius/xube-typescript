@@ -3,8 +3,9 @@
  */
 /// <reference path="./three.d.ts" />
 declare module THREE {
-    export class TrackballControls {
+    export class TrackballControls extends THREE.EventDispatcher {
         target:THREE.Vector3;
+
         rotateSpeed:number;
         zoomSpeed:number;
         panSpeed:number;
@@ -12,9 +13,25 @@ declare module THREE {
         noPan:boolean;
         staticMoving:boolean;
         dynamicDampingFactor:number;
-        keys;
+        screen:{
+            left:number;
+            top:number;
+            width:number;
+            height:number
+        };
 
-        constructor(camera:THREE.Camera, element);
+        noRotate:boolean;
+        noZoom:boolean;
+        noPan:boolean;
+        noRoll:boolean;
+        staticMoving:boolean;
+        dynamicDampingFactor:number;
+        minDistance:number;
+        maxDistance:number;
+
+        keys:number[];
+
+        constructor(object:THREE.Object3D, element:HTMLElement);
 
         update();
     }
