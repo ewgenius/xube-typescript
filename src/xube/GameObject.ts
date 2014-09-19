@@ -8,6 +8,11 @@ module Xube {
 
         }
 
+        /**
+         * object update handler
+         * @param delta
+         * @param game
+         */
         update(delta:number, game:Xube.Game) {
 
         }

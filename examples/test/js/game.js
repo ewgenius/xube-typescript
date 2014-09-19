@@ -66,13 +66,15 @@ var Xube;
 
         Game.prototype.remove = function (object) {
             var i = this.objects.indexOf(object);
-            var obj = this.objects[i];
+            if (this.objects.length > i) {
+                var obj = this.objects[i];
 
-            if (obj instanceof Xube.DrawableGameObject) {
-                this.scene.remove(obj.model);
+                if (obj instanceof Xube.DrawableGameObject) {
+                    this.scene.remove(obj.model);
+                }
+
+                this.objects.splice(i, 1);
             }
-
-            this.objects.splice(i, 1);
         };
 
         Game.prototype.update = function (delta, game) {

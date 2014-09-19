@@ -6,9 +6,9 @@
 /// <reference path="DrawableGameObject.ts" />
 
 module Xube {
-    export interface Initializeable {
-        initialize();
-    }
+    /**
+     * Main game class
+     */
     export class Game {
         private initialized:boolean;
         renderer:THREE.WebGLRenderer;
@@ -17,7 +17,11 @@ module Xube {
         private objects:GameObject[];
         lastFrame:number;
 
-        constructor(container) {
+        /**
+         * initializes new Xube Game instance
+         * @param container - dom element for placing THREE.js renderer if not exists will created        *
+         */
+        constructor(container?) {
             this.initialized = false;
 
             // init dom container
@@ -36,6 +40,9 @@ module Xube {
             this.lastFrame = 0;
         }
 
+        /**
+         * initialize handle for overriding
+         */
         initialize() {
             this.camera = new THREE.Camera();
         }
@@ -44,6 +51,10 @@ module Xube {
             this.initialize();
         }
 
+        /**
+         * adding new GameObject instance in game
+         * @param object - if drawable will be added into scene
+         */
         add(object:GameObject) {
             this.objects.push(object);
             if (object instanceof Xube.DrawableGameObject) {
@@ -51,27 +62,44 @@ module Xube {
             }
         }
 
+        /**
+         * removing recently added GameObject
+         * @param object
+         */
         remove(object:GameObject) {
             var i = this.objects.indexOf(object);
-            var obj = this.objects[i];
+            if (this.objects.length > i) {
+                var obj = this.objects[i];
 
-            if (obj instanceof Xube.DrawableGameObject) {
-                this.scene.remove((<Xube.DrawableGameObject>obj).model);
+                if (obj instanceof Xube.DrawableGameObject) {
+                    this.scene.remove((<Xube.DrawableGameObject>obj).model);
+                }
+
+                this.objects.splice(i, 1);
             }
-
-            this.objects.splice(i, 1);
         }
 
-        update(delta:number, game: Game) {
+        /**
+         * game update handler
+         * @param delta
+         * @param game - reference for Game instance
+         */
+        update(delta:number, game:Game) {
             for (var i in this.objects) {
                 this.objects[i].update(delta, game);
             }
         }
 
+        /**
+         * game render handler
+         */
         render() {
             this.renderer.render(this.scene, this.camera);
         }
 
+        /**
+         * main game loop function
+         */
         private loop() {
             var frame = new Date();
             var delta = 20;
@@ -86,6 +114,9 @@ module Xube {
             this.lastFrame = frame.getTime();
         }
 
+        /**
+         * Game runinig method
+         */
         run() {
             if (!this.initialized) {
                 this.doInitialize();
