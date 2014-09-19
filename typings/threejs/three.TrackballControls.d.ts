@@ -1,7 +1,7 @@
 /**
  * Created by ewgenius on 12.09.14.
  */
-/// <reference path="three.d.ts" />
+/// <reference path="./three.d.ts" />
 declare module THREE {
     export class TrackballControls {
         target:THREE.Vector3;

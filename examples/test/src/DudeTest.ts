@@ -1,8 +1,8 @@
 /**
  * Created by ewgenius on 11.09.14.
  */
-/// <reference path="../../../lib/three.d.ts" />
-/// <reference path="../../../lib/three.TrackballControls.d.ts" />
+/// <reference path="../../../typings/threejs/three.d.ts" />
+/// <reference path="../../../typings/threejs/three.TrackballControls.d.ts" />
 
 /// <reference path="../../../src/xube/Game.ts" />
 /// <reference path="../../../src/xube/GameObject.ts" />

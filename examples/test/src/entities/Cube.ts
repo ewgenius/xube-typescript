@@ -1,7 +1,7 @@
 /**
  * Created by ewgenius on 12.09.14.
  */
-/// <reference path="../../../../lib/three.d.ts" />
+/// <reference path="../../../../typings/threejs/three.d.ts" />
 /// <reference path="../../../../src/xube/GameObject.ts" />
 module DudeTest.Entities {
     export class Cube extends Xube.DrawableGameObject {
