@@ -33,21 +33,34 @@ var Xube;
 var Xube;
 (function (Xube) {
     var Game = (function () {
-        function Game(container) {
+        function Game(parameters) {
+            var _this = this;
             this.initialized = false;
+            this.physics = parameters.physics;
+            this.container = parameters.container;
 
-            if (container === undefined) {
-                container = document.body.appendChild(document.createElement('div'));
+            if (this.container === undefined) {
+                this.container = document.body.appendChild(document.createElement('div'));
             }
 
             this.renderer = new THREE.WebGLRenderer();
-            container.appendChild(this.renderer.domElement);
+            this.container.appendChild(this.renderer.domElement);
 
-            this.scene = new THREE.Scene();
+            if (this.physics) {
+                this.scene = new Physijs.Scene();
+                this.scene.addEventListener('update', function () {
+                    console.log('ph');
+                    _this.scene.simulate(undefined, 1);
+                });
+            } else
+                this.scene = new THREE.Scene();
 
             this.objects = [];
 
             this.lastFrame = 0;
+
+            if (this.physics)
+                this.scene.simulate();
         }
         Game.prototype.initialize = function () {
             this.camera = new THREE.Camera();
@@ -154,6 +167,36 @@ var DudeTest;
 var DudeTest;
 (function (DudeTest) {
     (function (Entities) {
+        var PhysicsCube = (function (_super) {
+            __extends(PhysicsCube, _super);
+            function PhysicsCube(y) {
+                _super.call(this);
+
+                var material = Physijs.createMaterial(new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff }), 0.6, 0.3);
+
+                var box = new Physijs.BoxMesh(new THREE.BoxGeometry(1, 1, 1), material);
+                box.addEventListener('collision', function (e) {
+                    console.log(e);
+                });
+                this.model.add(box);
+
+                this.model.position.y = y;
+            }
+            PhysicsCube.prototype.handleCollision = function (collided_with, linearVelocity, angularVelocity) {
+            };
+
+            PhysicsCube.prototype.update = function (delta, game) {
+                _super.prototype.update.call(this, delta, game);
+            };
+            return PhysicsCube;
+        })(Xube.DrawableGameObject);
+        Entities.PhysicsCube = PhysicsCube;
+    })(DudeTest.Entities || (DudeTest.Entities = {}));
+    var Entities = DudeTest.Entities;
+})(DudeTest || (DudeTest = {}));
+var DudeTest;
+(function (DudeTest) {
+    (function (Entities) {
         var Coords = (function (_super) {
             __extends(Coords, _super);
             function Coords(length) {
@@ -253,7 +296,13 @@ var DudeTest;
             var _this = this;
             _super.prototype.initialize.call(this);
 
-            sc = this;
+            (function () {
+                _this.stats = new Stats();
+                _this.stats.domElement.style.position = 'absolute';
+                _this.stats.domElement.style.top = '0px';
+                _this.stats.domElement.style.zIndex = 100;
+                _this.container.appendChild(_this.stats.domElement);
+            })();
 
             this.renderer.setSize(1000, 600);
             this.camera = new THREE.PerspectiveCamera(45, 1000 / 600, 1, 5000);
@@ -272,6 +321,8 @@ var DudeTest;
             this.controls.keys = [65, 83, 68];
 
             (function () {
+                _this.scene.setGravity(new THREE.Vector3(0, -30, 0));
+
                 var light = new THREE.DirectionalLight(0xffffff, 2);
                 light.position.set(1, 1, 1).normalize();
                 _this.scene.add(light);
@@ -282,7 +333,9 @@ var DudeTest;
 
                 _this.add(new DudeTest.Entities.Coords(5));
 
-                _this.add(new DudeTest.Entities.Minion());
+                _this.add(new DudeTest.Entities.PhysicsCube(4));
+                _this.add(new DudeTest.Entities.PhysicsCube(10));
+                _this.add(new DudeTest.Entities.PhysicsCube(12));
 
                 var plane = new DudeTest.Entities.Plane();
                 _this.add(plane);
@@ -293,13 +346,24 @@ var DudeTest;
             this.controls.update();
             _super.prototype.update.call(this, delta, game);
         };
+
+        DudeGame.prototype.render = function () {
+            _super.prototype.render.call(this);
+            this.stats.update();
+        };
         return DudeGame;
     })(Xube.Game);
     DudeTest.DudeGame = DudeGame;
 })(DudeTest || (DudeTest = {}));
 
 window.onload = function () {
+    Physijs.scripts.worker = '../../js/physijs_worker.js';
+    Physijs.scripts.ammo = '../../js/ammo.js';
+
     var container = document.getElementById('container');
-    var game = new DudeTest.DudeGame(container);
+    var game = new DudeTest.DudeGame({
+        container: container,
+        physics: true
+    });
     game.run();
 };

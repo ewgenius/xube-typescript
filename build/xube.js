@@ -33,21 +33,34 @@ var Xube;
 var Xube;
 (function (Xube) {
     var Game = (function () {
-        function Game(container) {
+        function Game(parameters) {
+            var _this = this;
             this.initialized = false;
+            this.physics = parameters.physics;
+            this.container = parameters.container;
 
-            if (container === undefined) {
-                container = document.body.appendChild(document.createElement('div'));
+            if (this.container === undefined) {
+                this.container = document.body.appendChild(document.createElement('div'));
             }
 
             this.renderer = new THREE.WebGLRenderer();
-            container.appendChild(this.renderer.domElement);
+            this.container.appendChild(this.renderer.domElement);
 
-            this.scene = new THREE.Scene();
+            if (this.physics) {
+                this.scene = new Physijs.Scene();
+                this.scene.addEventListener('update', function () {
+                    console.log('ph');
+                    _this.scene.simulate(undefined, 1);
+                });
+            } else
+                this.scene = new THREE.Scene();
 
             this.objects = [];
 
             this.lastFrame = 0;
+
+            if (this.physics)
+                this.scene.simulate();
         }
         Game.prototype.initialize = function () {
             this.camera = new THREE.Camera();

@@ -2,6 +2,7 @@
  * Created by ewgenius on 11.09.14.
  */
 /// <reference path="../../typings/threejs/three.d.ts" />
+/// <reference path="../../typings/physijs/physijs.d.ts" />
 /// <reference path="GameObject.ts" />
 /// <reference path="DrawableGameObject.ts" />
 
@@ -14,30 +15,52 @@ module Xube {
         renderer:THREE.WebGLRenderer;
         scene:THREE.Scene;
         camera:THREE.Camera;
+        container:Node;
         private objects:GameObject[];
         lastFrame:number;
+        private physics:boolean;
 
         /**
          * initializes new Xube Game instance
-         * @param container - dom element for placing THREE.js renderer if not exists will created        *
+         * @param parameters
          */
-        constructor(container?) {
+        constructor(parameters:{
+            container:Node;
+            physics:boolean;
+        }) {
             this.initialized = false;
+            this.physics = parameters.physics;
+            this.container = parameters.container;
 
             // init dom container
-            if (container === undefined) {
-                container = document.body.appendChild(document.createElement('div'));
+            if (this.container === undefined) {
+                this.container = document.body.appendChild(document.createElement('div'));
             }
 
             // init base game components
             this.renderer = new THREE.WebGLRenderer();
-            container.appendChild(this.renderer.domElement);
+            this.container.appendChild(this.renderer.domElement);
 
-            this.scene = new THREE.Scene();
+            // init physijs scene
+            if (this.physics) {
+                this.scene = new Physijs.Scene();
+                this.scene.addEventListener(
+                    'update',
+                    () => {
+                        console.log('ph');
+                        (<Physijs.Scene>this.scene).simulate(undefined, 1);
+                    }
+                );
+            }
+            else
+                this.scene = new THREE.Scene();
 
             this.objects = [];
 
             this.lastFrame = 0;
+
+            if (this.physics    )
+                (<Physijs.Scene>this.scene).simulate();
         }
 
         /**
