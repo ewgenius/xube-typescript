@@ -35,6 +35,6 @@ module.exports = function (grunt) {
 
     grunt.registerTask('default', ['typescript:' + target]);
 
-    grunt.registerTask('testing', ['typescript:base', 'typescript:test']);
+    grunt.registerTask('all', ['typescript:base', 'typescript:test']);
 
 };
